@@ -34,6 +34,3 @@ if __name__ == "__main__":
             obj.simulate_cache_access(address)
             address = leitor.read_next_address()
     obj.imprime()
-
-
-
