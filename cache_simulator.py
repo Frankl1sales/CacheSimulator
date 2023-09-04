@@ -1,5 +1,14 @@
-
 import sys
+from openBinary import openBinary
+from cache import Cache
+
+# Argumentos definidos por padrão para testes
+sys.argv.append(256)
+sys.argv.append(4)
+sys.argv.append(1)
+sys.argv.append('f')
+sys.argv.append(1)
+sys.argv.append('bin_100.bin')
 
 def main():
 	if (len(sys.argv) != 7):
@@ -7,15 +16,16 @@ def main():
 		print("python cache_simulator.py <nsets> <bsize> <assoc> <substituição> <flag_saida> arquivo_de_entrada")
 		exit(1)
 	
-	nsets = int(sys.argv[1])
-	bsize = int(sys.argv[2])
-	assoc = int(sys.argv[3])
+	nsets = sys.argv[1]
+	bsize = sys.argv[2]
+	assoc = sys.argv[3]
 	subst = sys.argv[4]
-	flagOut = int(sys.argv[5])
+	flagOut = sys.argv[5]
 	arquivoEntrada = sys.argv[6]
 
+	C = Cache(nsets,bsize,assoc,subst,flagOut,arquivoEntrada)
 
-
+	print("Argumentos passados")
 	print("nsets =", nsets)
 	print("bsize =", bsize)
 	print("assoc =", assoc)
@@ -23,9 +33,13 @@ def main():
 	print("flagOut =", flagOut)
 	print("arquivo =", arquivoEntrada)
 
-
 	# Seu codigo vai aqui
+	addresses = openBinary(arquivoEntrada)
 
+	for end in addresses:
+		C.simulate_cache_access(int(end))
+
+	C.imprime()
 
 
 if __name__ == '__main__':

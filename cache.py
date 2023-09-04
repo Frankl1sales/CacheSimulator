@@ -3,13 +3,14 @@ import math
 import random
 
 class Cache:
-    def __init__(self, assoc, n_sets, address_bits, b_size,algorithm):
+    def __init__(self, n_sets, b_size, assoc, algorithm, flagOut, address_bits):
         self.assoc = assoc
         self.n_sets = n_sets
         self.address_bits = address_bits
         self.b_size = b_size
         self.cache = [[None for _ in range(self.assoc)] for _ in range(self.n_sets)]
         self.algorithm = algorithm.lower()
+        self.flagOut = flagOut
 
         self.hits = 0
         self.misses = 0
@@ -65,7 +66,8 @@ class Cache:
         self.acess += 1
         offset_bits = int(math.log2(self.b_size))
         index_bits = int(math.log2(self.n_sets))
-        tag_bits = self.address_bits - offset_bits - index_bits
+        #unsupported operand type(s) for -: 'str' and 'int'
+        #tag_bits = self.address_bits - offset_bits - index_bits
         
         set_index = (memory_address >> offset_bits) % self.n_sets
         set_tag = (memory_address >> offset_bits)
@@ -103,7 +105,7 @@ class Cache:
         print("compulsory miss rate: {:.4f}".format(self.compulsory_misses / self.acess))
         print("capacity miss rate: {:.4f}".format(self.calcular_miss_capacidade()))
 
-
+'''
 c = Cache(assoc=2, n_sets=4, address_bits=16, b_size=4,algorithm="r")
 
 c.simulate_cache_access(0x1234)
@@ -113,7 +115,7 @@ c.simulate_cache_access(0x1234)
 c.simulate_cache_access(0x1234)
 
 c.imprime()
-
+'''
 
 
 """
