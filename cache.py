@@ -60,7 +60,7 @@ class Cache:
         if algo == "l":
             self.lru_replace(set_index,set_tag) 
         if algo == "f":
-            self.fifo_reaplace(set_index,set_tag)
+            self.fifo_replace(set_index,set_tag)
 
     def simulate_cache_access(self, memory_address):
         self.acess += 1
