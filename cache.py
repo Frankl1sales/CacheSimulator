@@ -10,7 +10,6 @@ class Cache:
         self.b_size = b_size
         self.cache = [[None for _ in range(self.assoc)] for _ in range(self.n_sets)]
         self.algorithm = algorithm.lower()
-        self.buffer = [[]]
 
         self.hits = 0
         self.misses = 0
