@@ -1,4 +1,4 @@
-from ex02c3 import CacheSimulator
+from cache import Cache
 
 class LeitorEndereco:
     def __init__(self, filename):
@@ -24,7 +24,7 @@ class LeitorEndereco:
 # Teste da classe LeitorEndereco
 if __name__ == "__main__":
     filename = "vortex.in.sem.persons.bin"
-    obj = CacheSimulator(assoc=2, n_sets=512, address_bits=32, b_size=8)
+    obj = Cache(assoc=2, n_sets=512, address_bits=32, b_size=8, algorithm="r")
     # Duvida: como é a representação de uma cache que o bloco é menor que o bloco de memoria
 
     with LeitorEndereco(filename) as leitor:

@@ -103,8 +103,8 @@ class Cache:
         print("compulsory miss rate: {:.4f}".format(self.compulsory_misses / self.acess))
         print("capacity miss rate: {:.4f}".format(self.calcular_miss_capacidade()))
 
-
-c = Cache(assoc=2, n_sets=4, address_bits=16, b_size=4,algorithm="r")
+""""
+c = Cache(assoc=2, n_sets=4, address_bits=16, b_size=4,algorithm="l")
 
 c.simulate_cache_access(0x1234)
 c.simulate_cache_access(0xABCD)
@@ -115,8 +115,6 @@ c.simulate_cache_access(0x1234)
 c.imprime()
 
 
-
-"""
 # Criar uma instância do simulador de cache
 simulador_cache = CacheSimulator(assoc=2, n_sets=4, address_bits=16, b_size=4)
 
