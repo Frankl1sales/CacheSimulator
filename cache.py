@@ -104,7 +104,12 @@ class Cache:
         print("miss rate: {:.4f}".format(self.misses / self.acess))
         print("compulsory miss rate: {:.4f}".format(self.compulsory_misses / self.acess))
         print("capacity miss rate: {:.4f}".format(self.calcular_miss_capacidade()))
+        
+    def getData(self):
+        return self.hits/self.acess,self.misses/self.acess,self.compulsory_misses/self.acess,self.calcular_miss_capacidade()
 
+    def getAcess(self):
+        return self.acess
 
 '''
 c = Cache(assoc=2, n_sets=4, address_bits=16, b_size=4,algorithm="r")
