@@ -2,13 +2,13 @@ import sys
 from openBinary import openBinary
 from cache import Cache
 
-# Argumentos definidos por padrão para testes
-sys.argv.append(256)
-sys.argv.append(4)
-sys.argv.append(2)
-sys.argv.append('f')
+# Argumentos definidos por padrão para testesW
 sys.argv.append(1)
-sys.argv.append('bin_100.bin')
+sys.argv.append(4)
+sys.argv.append(32)
+sys.argv.append('l')
+sys.argv.append(1)
+sys.argv.append('vortex.in.sem.persons.bin')
 
 def main():
 	if (len(sys.argv) != 7):
