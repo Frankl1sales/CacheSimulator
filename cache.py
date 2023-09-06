@@ -149,11 +149,8 @@ class Cache:
         print("miss rate: {:.4f}".format(self.misses / self.acess))
         print("compulsory miss rate: {:.4f}".format(self.compulsory_misses / self.acess))
         print("capacity miss rate: {:.4f}".format(self.calcular_miss_capacidade()))
-<<<<<<< HEAD
-=======
         print("miss conflict rate: {:.4f}".format(self.conflict_misses/ self.acess))
         # print("acumulated capacity: {:.4f}".format(self.acumulate))
->>>>>>> 7a220745e8f074b797b12c27d45b6761b12bcd42
 
     def getData(self):
         return self.hits/self.acess,self.misses/self.acess,self.compulsory_misses/self.acess,self.calcular_miss_capacidade()#,tx miss conflito
