@@ -5,14 +5,13 @@ from functools import lru_cache
 from collections import OrderedDict
 
 class Cache:
-    def __init__(self, n_sets, b_size, assoc, algorithm, flagOut, address_bits):
+    def __init__(self, n_sets, b_size, assoc, algorithm, address_bits):
         self.assoc = assoc
         self.n_sets = n_sets
         self.address_bits = address_bits
         self.b_size = b_size
         self.cache = [[None for _ in range(self.assoc)] for _ in range(self.n_sets)]
         self.algorithm = algorithm.lower()
-        self.flagOut = flagOut
 
         self.hits = 0
         self.misses = 0
@@ -91,7 +90,7 @@ class Cache:
     def fifo_replace(self, set_index, set_tag):
         # caso não tenha nenhum elemento
         if self.searchBuffer(set_index) == None:
-            self.cache[0][set_index] = set_tag
+            self.cache[set_index][0] = set_tag
             self.buffer.append(set_index)
             self.buffer.append(1) # Marca a prox pos de preenchimento
             return
@@ -101,7 +100,7 @@ class Cache:
                 if self.buffer[c] == set_index:
                     self.buffer[c+1] = 0
         # add na pos de preenchimento
-        self.cache[self.searchBuffer(set_index)][set_index] = set_tag
+        self.cache[set_index][self.searchBuffer(set_index)] = set_tag
         # pesquisa o set e incrementa o valor do buffer
         for c in range(0,len(self.buffer),2):
                 if self.buffer[c] == set_index:
@@ -130,9 +129,12 @@ class Cache:
         print("miss rate: {:.4f}".format(self.misses / self.acess))
         print("compulsory miss rate: {:.4f}".format(self.compulsory_misses / self.acess))
         print("capacity miss rate: {:.4f}".format(self.calcular_miss_capacidade()))
-        
+
     def getData(self):
-        return self.hits/self.acess,self.misses/self.acess,self.compulsory_misses/self.acess,self.calcular_miss_capacidade()
+        return self.hits/self.acess,self.misses/self.acess,self.compulsory_misses/self.acess,self.calcular_miss_capacidade()#,tx miss conflito
+    
+    def getCacheInfo(self):
+         return f'Cache {self.n_sets} Conjuntos, Tamanho de bloco {self.b_size} ,Associatividade {self.assoc}, Algoritmo {self.algorithm}'
 
     def getAcess(self):
         return self.acess
