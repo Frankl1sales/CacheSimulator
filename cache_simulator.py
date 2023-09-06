@@ -6,10 +6,10 @@ from time import sleep
 
 # Argumentos definidos por padrão para testesW
 """
-sys.argv.append(256)
-sys.argv.append(4)
-sys.argv.append(4)
-sys.argv.append('l')
+sys.argv.append(512)
+sys.argv.append(8)
+sys.argv.append(2)
+sys.argv.append('r')
 sys.argv.append(1)
 sys.argv.append('vortex.in.sem.persons.bin')
 """
@@ -21,8 +21,8 @@ def main():
 		exit(1)
 	else:
 		if (len(sys.argv) == 7):
-			if sys.argv[5] == 1: # Flag 1 Saída Padrão
-				C = Cache(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4],sys.argv[6])
+			if sys.argv[5] == '1': # Flag 1 Saída Padrão
+				C = Cache(int(sys.argv[1]),int(sys.argv[2]),int(sys.argv[3]),sys.argv[4],sys.argv[6])
 				for end in openBinary(C.address_bits):
 					C.simulate_cache_access(end)
 				data = C.getData()
