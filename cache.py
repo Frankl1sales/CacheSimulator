@@ -153,7 +153,7 @@ class Cache:
         # print("acumulated capacity: {:.4f}".format(self.acumulate))
 
     def getData(self):
-        return self.hits/self.acess,self.misses/self.acess,self.compulsory_misses/self.acess,self.calcular_miss_capacidade()#,tx miss conflito
+        return self.hits/self.acess,self.misses/self.acess,self.compulsory_misses/self.acess,self.calcular_miss_capacidade(),self.conflict_misses/self.acess#,tx miss conflito
     
     def getCacheInfo(self):
          return f'Cache {self.n_sets} Conjuntos, Tamanho de bloco {self.b_size} ,Associatividade {self.assoc}, Algoritmo {self.algorithm}'

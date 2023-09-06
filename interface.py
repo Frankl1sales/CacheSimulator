@@ -12,7 +12,7 @@ layout = [
 	
 class Graph:
     def __init__(self,values,acess,cacheInfo):
-        self.names = ['Hits','Miss','Misses Compulsórios','Misses capacidade']
+        self.names = ['Hits','Miss','Misses Compulsórios','Misses capacidade','Misses conflito']
         self.values = values
         self.title = cacheInfo
         self.acess = acess
@@ -22,6 +22,6 @@ class Graph:
         xy.bar(self.names,self.values)
         xy.set_title(f"""{self.title}
 Total de acessos = {self.acess:.4f}     Hits = {self.values[0]:.4f}     Misses = {self.values[1]:.4f} 
-Misses Compulsórios = {self.values[2]:.4f}     Misses de Capacidade = {self.values[3]:.4f}""")
+Misses Compulsórios = {self.values[2]:.4f}     Misses de Capacidade = {self.values[3]:.4f}     Misses Conflito = {self.values[4]}""")
         fig.set_size_inches(8,6)
         plt.show()
