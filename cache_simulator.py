@@ -9,8 +9,8 @@ from time import sleep
 sys.argv.append(256)
 sys.argv.append(4)
 sys.argv.append(4)
-sys.argv.append('f')
-sys.argv.append(0)
+sys.argv.append('l')
+sys.argv.append(1)
 sys.argv.append('vortex.in.sem.persons.bin')
 """
 def main():
@@ -26,7 +26,7 @@ def main():
 				for end in openBinary(C.address_bits):
 					C.simulate_cache_access(end)
 				data = C.getData()
-				print(f'{C.getAcess()} {data[0]:.2f} {data[1]:.2f} {data[2]:.2f} {data[2]:.2f}')
+				print(f'{C.getAcess()} {data[0]:.2f} {data[1]:.2f} {data[2]:.2f} {data[2]:.2f} {C.getConflictMisses()/C.getAcess():.2f}')
 		else:  # Flag 0 Formato Livre
 			values = []
 			elements = []

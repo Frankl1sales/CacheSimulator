@@ -161,6 +161,9 @@ class Cache:
     def getAcess(self):
         return self.acess
 
+    def getConflictMisses(self):
+        return self.conflict_misses
+
 '''
 c = Cache(assoc=2, n_sets=4, address_bits=16, b_size=4,algorithm="r")
 
