@@ -4,12 +4,13 @@ from cache import Cache
 from interface import *
 
 # Argumentos definidos por padrão para testesW
+
+sys.argv.append(16)
+sys.argv.append(2)
+sys.argv.append(8)
+sys.argv.append('r')
 sys.argv.append(1)
-sys.argv.append(4)
-sys.argv.append(32)
-sys.argv.append('l')
-sys.argv.append(1)
-sys.argv.append('vortex.in.sem.persons.bin')
+sys.argv.append('bin_10000.bin')
 
 def main():
 	values = []

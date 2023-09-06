@@ -21,63 +21,83 @@ class Cache:
         self.unique_blocks_referenced = set()  # Conjunto de blocos únicos referenciados
         self.buffer = [[] for _ in range(self.n_sets)]  # Lista vazia para cada conjunto
         self.lru_buffers = [OrderedDict() for _ in range(self.n_sets)]
+        self.access_order = [set() for _ in range(n_sets)]  # Agora é um conjunto vazio
+        self.acumulate = 0
+        self.conflict_misses = 0  # Contador para miss de conflito
 
-    def simulate_cache_access(self, memory_address):
+    # calcula o index e o tag
+    def initialize_simulation(self, memory_address):
         self.acess += 1
         offset_bits = int(math.log2(self.b_size))
         index_bits = int(math.log2(self.n_sets))
-        #unsupported operand type(s) for -: 'str' and 'int'
-        #tag_bits = self.address_bits - offset_bits - index_bits
-        
+        # Calcula set_tag e set_index
         set_index = (memory_address >> offset_bits) % self.n_sets
         set_tag = (memory_address >> offset_bits)
-        
+        # retorna index e tag
+        return set_index, set_tag
+
+    def simulate_cache_access(self, memory_address):
+        set_index, set_tag = self.initialize_simulation(memory_address)
+
+        # Verifica se o bloco está na cache
         block_found = False
         for block in self.cache[set_index]:
             if block is not None and block == set_tag:
                 block_found = True
                 break
 
+        # Contabiliza o hit
         if block_found:
             self.hits += 1
+            self.access_order[set_index].add(set_tag)
 
+        # Inicializa o tratamento da falta
         else:
-            self.misses += 1
-            if self.cache[set_index][0] is None:
-                self.compulsory_misses += 1
-            self.unique_blocks_referenced.add(set_tag)
-            if self.assoc == 1:
-                self.cache[set_index][0] = set_tag
-            else:
-                self.substituition(set_index,set_tag)
+            self.handle_cache_miss(set_index, set_tag)
     
+    # classifica qual deve ser o tratamento da falta
+    def handle_cache_miss(self, set_index, set_tag):
+        # Contabiliza o miss
+        self.misses += 1
+
+        # Contabiliza miss compulsório e miss de capacidade
+        if self.cache[set_index][0] is None:
+            self.compulsory_misses += 1
+        elif len(self.cache[set_index]) >= self.assoc:
+            # Se o conjunto estiver cheio, é um miss de conflito
+            self.conflict_misses += 1
+            self.acumulate += 1
+
+        self.unique_blocks_referenced.add(set_tag)
+
+        # Tratamento para Cache Mapeamento Direto
+        if self.assoc == 1:
+            self.cache[set_index][0] = set_tag
+        # Tratamento para demais Caches
+        # Fork de Politicas de Substituição
+        else:
+            self.substituition(set_index, set_tag)
+    # Politica de Substituição Random 
     def random_replace(self, set_index, set_tag):
         random_block_index = random.randint(0, self.assoc - 1)
         self.cache[set_index][random_block_index] = set_tag
 
     def lru_replace(self, set_index, set_tag):
-        # Verifica se o conjunto está vazio (todos os blocos são None)
-        if any(block is None for block in self.cache[set_index]):
-            # Se o conjunto não está vazio, encontramos o bloco LRU
-            # com base no buffer que armazena as idades.
-            lru_block_index = list(self.lru_buffers[set_index].keys())[0] if self.lru_buffers[set_index] else 0
+        if set_tag in self.cache[set_index]:
+            # Se o bloco já estiver na cache, mova-o para o final da lista
+            #self.cache[set_index].remove(set_tag)
+            #self.cache[set_index].append(set_tag)
+            return
         else:
-            # Caso contrário, o conjunto está vazio e todos os blocos estão ocupados
-            # Procura o primeiro bloco vazio no conjunto
-            for block_index, block in enumerate(self.cache[set_index]):
-                if block is None:
-                    lru_block_index = block_index
-                    break
-
-            # Caso não encontre nenhum bloco vazio, retorna
-            if lru_block_index is None:
-                return
-
-        # Substitui o bloco LRU ou o bloco None pela nova tag
-        self.cache[set_index][lru_block_index] = set_tag
-        # Atualiza o buffer LRU com o bloco mais recente
-        if 0 <= lru_block_index < len(self.lru_buffers[set_index]):
-            self.lru_buffers[set_index].move_to_end(lru_block_index)
+            # Verifique se a lista de ordem de acesso não está vazia
+            
+            if self.access_order[set_index]:
+                # Remova o bloco mais antigo
+                lru_block = self.access_order[set_index].pop()
+                self.cache[set_index].remove(lru_block)
+            self.cache[set_index].append(set_tag)
+            self.access_order[set_index].add(set_tag)
+            
 
 
     def searchBuffer(self,set_index):
@@ -130,7 +150,9 @@ class Cache:
         print("miss rate: {:.4f}".format(self.misses / self.acess))
         print("compulsory miss rate: {:.4f}".format(self.compulsory_misses / self.acess))
         print("capacity miss rate: {:.4f}".format(self.calcular_miss_capacidade()))
-        
+        print("miss conflict rate: {:.4f}".format(self.conflict_misses/ self.acess))
+        # print("acumulated capacity: {:.4f}".format(self.acumulate))
+
     def getData(self):
         return self.hits/self.acess,self.misses/self.acess,self.compulsory_misses/self.acess,self.calcular_miss_capacidade()
 
